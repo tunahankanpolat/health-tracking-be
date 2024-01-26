@@ -1,12 +1,15 @@
 package health.tracking.backend.model.entity;
 
-import health.tracking.backend.model.User;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Doctor extends User {
     private String specialization;
 }
