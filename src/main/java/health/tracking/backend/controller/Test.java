@@ -52,6 +52,6 @@ public class Test {
                 .build();
         log.error("request: {}", request);
         doctorService.createDoctor(request);
-        return ResponseEntity.ok(jwtUtils.generateToken(request.username()));
+        return ResponseEntity.ok(jwtUtils.generateToken(request.getUsername()));
     }
 }

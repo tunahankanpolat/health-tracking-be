@@ -4,15 +4,20 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+
+import java.util.Date;
 
 @Entity
-@SuperBuilder
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Admin extends User {
+public class Drug {
     @Id
-    @Column(name = "admin_id")
+    @Column(name = "drug_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String name;
+    private Date expiryDate;
+    private String instructions;
+    private String description;
 }

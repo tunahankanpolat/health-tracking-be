@@ -4,15 +4,21 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+
+import java.util.Date;
 
 @Entity
-@SuperBuilder
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Admin extends User {
+public class HealthData {
     @Id
-    @Column(name = "admin_id")
+    @Column(name = "health_data_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Date timestamp;
+    private int heartRate;
+    @ManyToOne
+    @JoinColumn(name = "patient_id")
+    private Patient patient;
 }

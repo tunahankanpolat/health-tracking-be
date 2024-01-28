@@ -4,21 +4,26 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 @Entity
-@SuperBuilder
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PatientRelative extends User {
+public class DrugUsage {
     @Id
-    @Column(name = "patient_relative_id")
+    @Column(name = "drug_usage_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String relationship;
+    @ManyToOne
+    @JoinColumn(name = "drug_id")
+    private Drug drug;
+
+    private double dosage;
+    private String frequency;
+    private String notes;
 
     @ManyToOne
-    @JoinColumn(name = "patient_id")
-    private Patient patient;
+    @JoinColumn(name = "prescription_id")
+    private Prescription prescription;
 }
