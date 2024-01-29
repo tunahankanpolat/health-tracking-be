@@ -1,10 +1,11 @@
 package health.tracking.backend.business.concretes;
 
-import health.tracking.backend.business.abstracts.AdminService;
 import health.tracking.backend.model.Role;
 import health.tracking.backend.model.entity.Admin;
-import health.tracking.backend.model.entity.Doctor;
+import health.tracking.backend.business.abstracts.AdminService;
 import health.tracking.backend.model.request.CreateAdminRequest;
+import health.tracking.backend.model.request.UpdateAdminRequest;
+import health.tracking.backend.model.response.GetAdminResponse;
 import health.tracking.backend.repository.AdminRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -48,5 +49,26 @@ public class AdminServiceImpl implements AdminService, UserDetailsService {
                 .build();
         adminRepository.save(newAdmin);
         return "Admin created successfully";
+    }
+
+    @Override
+    public GetAdminResponse getAdmin(Long id) {
+        // Implement read logic
+        // Find entity and convert to response
+        return new GetAdminResponse();
+    }
+
+    @Override
+    public String updateAdmin(UpdateAdminRequest request) {
+        // Implement update logic
+        // Update entity and convert to response
+        return "Admin updated successfully";
+    }
+
+    @Override
+    public String deleteAdmin(Long id) {
+        // Implement delete logic
+        adminRepository.deleteById(id);
+        return "Admin deleted successfully";
     }
 }

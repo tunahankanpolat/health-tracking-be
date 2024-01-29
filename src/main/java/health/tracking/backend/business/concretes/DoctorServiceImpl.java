@@ -4,6 +4,8 @@ import health.tracking.backend.business.abstracts.DoctorService;
 import health.tracking.backend.model.Role;
 import health.tracking.backend.model.entity.Doctor;
 import health.tracking.backend.model.request.CreateDoctorRequest;
+import health.tracking.backend.model.request.UpdateDoctorRequest;
+import health.tracking.backend.model.response.GetDoctorResponse;
 import health.tracking.backend.repository.DoctorRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,6 +33,7 @@ public class DoctorServiceImpl implements DoctorService, UserDetailsService {
     public Doctor getByUsername(String username) {
         return doctorRepository.findByUsername(username);
     }
+
     public String createDoctor(CreateDoctorRequest request) {
         Doctor newDoctor = Doctor.builder()
                 .name(request.getName())
@@ -49,5 +52,26 @@ public class DoctorServiceImpl implements DoctorService, UserDetailsService {
 
         doctorRepository.save(newDoctor);
         return "Doctor created successfully";
+    }
+
+    @Override
+    public GetDoctorResponse getDoctor(Long id) {
+        // Implement read logic
+        // Find entity and convert to response
+        return new GetDoctorResponse();
+    }
+
+    @Override
+    public String updateDoctor(UpdateDoctorRequest request) {
+        // Implement update logic
+        // Update entity and convert to response
+        return "Doctor updated successfully";
+    }
+
+    @Override
+    public String deleteDoctor(Long id) {
+        // Implement delete logic
+        doctorRepository.deleteById(id);
+        return "Doctor deleted successfully";
     }
 }

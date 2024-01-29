@@ -2,11 +2,10 @@ package health.tracking.backend.business.concretes;
 
 import health.tracking.backend.business.abstracts.PatientRelativeService;
 import health.tracking.backend.model.Role;
-import health.tracking.backend.model.entity.Doctor;
-import health.tracking.backend.model.entity.PatientRelative;
 import health.tracking.backend.model.entity.PatientRelative;
 import health.tracking.backend.model.request.CreatePatientRelativeRequest;
-import health.tracking.backend.repository.PatientRelativeRepository;
+import health.tracking.backend.model.request.UpdatePatientRelativeRequest;
+import health.tracking.backend.model.response.GetPatientRelativeResponse;
 import health.tracking.backend.repository.PatientRelativeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -52,5 +50,26 @@ public class PatientRelativeServiceImpl implements PatientRelativeService, UserD
 
         patientRelativeRepository.save(newPatientRelative);
         return "Patient Relative created successfully";
+    }
+
+    @Override
+    public GetPatientRelativeResponse getPatientRelative(Long id) {
+        // Implement read logic
+        // Find entity and convert to response
+        return new GetPatientRelativeResponse();
+    }
+
+    @Override
+    public String updatePatientRelative(UpdatePatientRelativeRequest request) {
+        // Implement update logic
+        // Update entity and convert to response
+        return "PatientRelative updated successfully";
+    }
+
+    @Override
+    public String deletePatientRelative(Long id) {
+        // Implement delete logic
+        patientRelativeRepository.deleteById(id);
+        return "PatientRelative deleted successfully";
     }
 }
