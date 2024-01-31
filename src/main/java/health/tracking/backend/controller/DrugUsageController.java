@@ -4,6 +4,7 @@ import health.tracking.backend.business.abstracts.DrugUsageService;
 import health.tracking.backend.model.request.CreateDrugUsageRequest;
 import health.tracking.backend.model.request.UpdateDrugUsageRequest;
 import health.tracking.backend.model.response.GetDrugUsageResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class DrugUsageController {
     private final DrugUsageService drugusageService;
 
     @PostMapping
-    public ResponseEntity<String> createDrugUsage(@RequestBody CreateDrugUsageRequest request) {
+    public ResponseEntity<String> createDrugUsage(@Valid @RequestBody CreateDrugUsageRequest request) {
         return ResponseEntity.ok(drugusageService.createDrugUsage(request));
     }
 
@@ -25,7 +26,7 @@ public class DrugUsageController {
     }
 
     @PutMapping
-    ResponseEntity<String> updateDrugUsage(@RequestBody UpdateDrugUsageRequest request) {
+    public ResponseEntity<String> updateDrugUsage(@Valid @RequestBody UpdateDrugUsageRequest request) {
         return ResponseEntity.ok(drugusageService.updateDrugUsage(request));
     }
 

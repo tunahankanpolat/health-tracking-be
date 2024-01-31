@@ -1,12 +1,14 @@
 package health.tracking.backend.business.concretes;
 
+import health.tracking.backend.business.abstracts.AdminService;
 import health.tracking.backend.model.Role;
 import health.tracking.backend.model.entity.Admin;
-import health.tracking.backend.business.abstracts.AdminService;
+import health.tracking.backend.model.entity.User;
 import health.tracking.backend.model.request.CreateAdminRequest;
 import health.tracking.backend.model.request.UpdateAdminRequest;
 import health.tracking.backend.model.response.GetAdminResponse;
 import health.tracking.backend.repository.AdminRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Date;
 
 @Service
 @AllArgsConstructor
@@ -24,17 +27,13 @@ public class AdminServiceImpl implements AdminService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Admin admin = adminRepository.findByUsername(username);
-        if (admin != null) {
-            admin.setAuthorities(Collections.singleton(Role.ADMIN));
-        }
-        return adminRepository.findByUsername(username);
+        return this.getByUsername(username);
     }
     public Admin getByUsername(String username) {
-        return adminRepository.findByUsername(username);
+        return adminRepository.findByUserUsername(username);
     }
     public String createAdmin(CreateAdminRequest request) {
-        Admin newAdmin = Admin.builder()
+        User user = User.builder()
                 .name(request.getName())
                 .surname(request.getSurname())
                 .address(request.getAddress())
@@ -42,10 +41,15 @@ public class AdminServiceImpl implements AdminService, UserDetailsService {
                 .phoneNumber(request.getPhoneNumber())
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .authorities(Collections.singleton(Role.ADMIN))
+                .registrationDate(new Date())
                 .accountNonExpired(true)
                 .credentialsNonExpired(true)
                 .isEnabled(true)
                 .accountNonLocked(true)
+                .build();
+        Admin newAdmin = Admin.builder()
+                .user(user)
                 .build();
         adminRepository.save(newAdmin);
         return "Admin created successfully";
@@ -53,15 +57,21 @@ public class AdminServiceImpl implements AdminService, UserDetailsService {
 
     @Override
     public GetAdminResponse getAdmin(Long id) {
-        // Implement read logic
-        // Find entity and convert to response
-        return new GetAdminResponse();
+        Admin admin = adminRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return GetAdminResponse.builder()
+                .name(admin.getUser().getName())
+                .surname(admin.getUser().getSurname())
+                .username(admin.getUser().getUsername())
+                .phoneNumber(admin.getUser().getPhoneNumber())
+                .emailAddress(admin.getUser().getEmailAddress())
+                .address(admin.getUser().getAddress())
+                .build();
     }
 
     @Override
     public String updateAdmin(UpdateAdminRequest request) {
-        // Implement update logic
-        // Update entity and convert to response
+        Admin admin = adminRepository.findById(request.getId()).orElseThrow(EntityNotFoundException::new);
+
         return "Admin updated successfully";
     }
 

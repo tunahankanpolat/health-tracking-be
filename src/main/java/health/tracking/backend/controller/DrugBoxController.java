@@ -4,6 +4,7 @@ import health.tracking.backend.business.abstracts.DrugBoxService;
 import health.tracking.backend.model.request.CreateDrugBoxRequest;
 import health.tracking.backend.model.request.UpdateDrugBoxRequest;
 import health.tracking.backend.model.response.GetDrugBoxResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class DrugBoxController {
     private final DrugBoxService drugboxService;
 
     @PostMapping
-    public ResponseEntity<String> createDrugBox(@RequestBody CreateDrugBoxRequest request) {
+    public ResponseEntity<String> createDrugBox(@Valid @RequestBody CreateDrugBoxRequest request) {
         return ResponseEntity.ok(drugboxService.createDrugBox(request));
     }
 
@@ -25,7 +26,7 @@ public class DrugBoxController {
     }
 
     @PutMapping
-    ResponseEntity<String> updateDrugBox(@RequestBody UpdateDrugBoxRequest request) {
+    public ResponseEntity<String> updateDrugBox(@Valid @RequestBody UpdateDrugBoxRequest request) {
         return ResponseEntity.ok(drugboxService.updateDrugBox(request));
     }
 

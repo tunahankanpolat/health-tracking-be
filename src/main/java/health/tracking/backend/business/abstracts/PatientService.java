@@ -11,4 +11,5 @@ public interface PatientService {
     String updatePatient(UpdatePatientRequest request);
     String deletePatient(Long id);
     Patient getByUsername(String username);
+    Patient getByPatientById(Long id);
 }

@@ -44,6 +44,8 @@ public class WebSecurityConfig {
                 .cors(configurer -> configurer.configurationSource(corsConfigurationSource))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/", "/error", "/api/test/v1/login", "/api/test/v1/token", "/v3/api-docs", "/api-docs.yaml", "/swagger-ui.html", "/v3/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/api/admin/v1/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/doctor/v1/**").hasAnyAuthority("DOCTOR", "ADMIN")
 
                         .anyRequest().authenticated()
                 )

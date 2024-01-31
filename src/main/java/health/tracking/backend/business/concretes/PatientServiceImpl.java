@@ -1,12 +1,15 @@
 package health.tracking.backend.business.concretes;
 
+import health.tracking.backend.business.abstracts.DoctorService;
 import health.tracking.backend.business.abstracts.PatientService;
 import health.tracking.backend.model.Role;
 import health.tracking.backend.model.entity.Patient;
+import health.tracking.backend.model.entity.User;
 import health.tracking.backend.model.request.CreatePatientRequest;
 import health.tracking.backend.model.request.UpdatePatientRequest;
 import health.tracking.backend.model.response.GetPatientResponse;
 import health.tracking.backend.repository.PatientRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,26 +18,30 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Date;
 
 @Service
 @AllArgsConstructor
 public class PatientServiceImpl implements PatientService, UserDetailsService {
     private final PatientRepository patientRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final DoctorService doctorService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Patient patient = patientRepository.findByUsername(username);
-        if (patient != null) {
-            patient.setAuthorities(Collections.singleton(Role.PATIENT));
-        }
-        return patientRepository.findByUsername(username);
+        return this.getByUsername(username);
     }
     public Patient getByUsername(String username) {
-        return patientRepository.findByUsername(username);
+        return patientRepository.findByUserUsername(username);
     }
+
+    @Override
+    public Patient getByPatientById(Long id) {
+        return patientRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    }
+
     public String createPatient(CreatePatientRequest request) {
-        Patient newPatient = Patient.builder()
+        User user = User.builder()
                 .name(request.getName())
                 .surname(request.getSurname())
                 .address(request.getAddress())
@@ -42,16 +49,23 @@ public class PatientServiceImpl implements PatientService, UserDetailsService {
                 .phoneNumber(request.getPhoneNumber())
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .authorities(Collections.singleton(Role.PATIENT))
+                .registrationDate(new Date())
+                .accountNonExpired(true)
+                .credentialsNonExpired(true)
+                .isEnabled(true)
+                .accountNonLocked(true)
+                .build();
+        Patient newPatient = Patient.builder()
+                .user(user)
+                .doctors(Collections.singletonList(doctorService.getByDoctorById(request.getDoctorId())))
                 .bloodType(request.getBloodType())
                 .rfidTag(request.getRfidTag())
                 .height(request.getHeight())
                 .weight(request.getWeight())
                 .gender(request.getGender())
                 .birthDate(request.getBirthDate())
-                .accountNonExpired(true)
-                .credentialsNonExpired(true)
-                .isEnabled(true)
-                .accountNonLocked(true)
+                .gender(request.getGender())
                 .build();
 
         patientRepository.save(newPatient);
@@ -60,9 +74,22 @@ public class PatientServiceImpl implements PatientService, UserDetailsService {
 
     @Override
     public GetPatientResponse getPatient(Long id) {
-        // Implement read logic
-        // Find entity and convert to response
-        return new GetPatientResponse();
+        Patient patient = patientRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return GetPatientResponse.builder()
+                .name(patient.getUser().getName())
+                .surname(patient.getUser().getSurname())
+                .username(patient.getUser().getUsername())
+                .phoneNumber(patient.getUser().getPhoneNumber())
+                .emailAddress(patient.getUser().getEmailAddress())
+                .address(patient.getUser().getAddress())
+                .bloodType(patient.getBloodType())
+                .rfidTag(patient.getRfidTag())
+                .height(patient.getHeight())
+                .weight(patient.getWeight())
+                .gender(patient.getGender())
+                .birthDate(patient.getBirthDate())
+                .gender(patient.getGender())
+                .build();
     }
 
     @Override

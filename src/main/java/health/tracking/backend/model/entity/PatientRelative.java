@@ -1,16 +1,25 @@
 package health.tracking.backend.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
 
 @Entity
-@SuperBuilder
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PatientRelative extends User {
+public class PatientRelative implements UserDetails {
+    @NotNull
+    @JoinColumn(name = "user_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    private User user;
+
     @Id
     @Column(name = "patient_relative_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,4 +30,39 @@ public class PatientRelative extends User {
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.user.getAuthorities();
+    }
+
+    @Override
+    public String getPassword() {
+        return this.user.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return this.user.getUsername();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return this.user.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return this.user.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return this.user.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.user.isEnabled();
+    }
 }

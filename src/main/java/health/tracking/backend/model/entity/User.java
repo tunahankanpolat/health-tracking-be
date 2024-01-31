@@ -2,22 +2,24 @@ package health.tracking.backend.model.entity;
 
 import health.tracking.backend.model.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import lombok.*;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Date;
 import java.util.Set;
 
-@MappedSuperclass
-@Data
-@SuperBuilder
+@Entity
+@Table(name = "users")
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class User  implements UserDetails {
+public class User implements UserDetails {
+    @Id
+    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
     private String surname;
     private String username;
@@ -37,5 +39,9 @@ public abstract class User  implements UserDetails {
     private boolean accountNonLocked;
     @Column(name = "credentials_non_expired")
     private boolean credentialsNonExpired;
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @JoinTable(name = "authorities", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Set<Role> authorities;
 }

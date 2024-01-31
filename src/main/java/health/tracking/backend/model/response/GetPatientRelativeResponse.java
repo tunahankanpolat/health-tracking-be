@@ -10,6 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetPatientRelativeResponse {
-    // Fields will be added here
-    private int id;
+    private String name;
+    private String surname;
+    private String username;
+    private String phoneNumber;
+    private String emailAddress;
+    private String address;
+    private String relationship;
 }

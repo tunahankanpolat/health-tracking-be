@@ -4,6 +4,7 @@ import health.tracking.backend.business.abstracts.AdminService;
 import health.tracking.backend.model.request.CreateAdminRequest;
 import health.tracking.backend.model.request.UpdateAdminRequest;
 import health.tracking.backend.model.response.GetAdminResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class AdminController {
     private final AdminService adminService;
 
     @PostMapping
-    public ResponseEntity<String> createAdmin(@RequestBody CreateAdminRequest request) {
+    public ResponseEntity<String> createAdmin(@Valid @RequestBody CreateAdminRequest request) {
         return ResponseEntity.ok(adminService.createAdmin(request));
     }
 
@@ -24,8 +25,8 @@ public class AdminController {
         return ResponseEntity.ok(adminService.getAdmin(id));
     }
 
-    @PutMapping
-    ResponseEntity<String> updateAdmin(@RequestBody UpdateAdminRequest request) {
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateAdmin(@Valid @RequestBody UpdateAdminRequest request) {
         return ResponseEntity.ok(adminService.updateAdmin(request));
     }
 

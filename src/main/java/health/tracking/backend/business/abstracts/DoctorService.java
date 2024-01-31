@@ -11,4 +11,5 @@ public interface DoctorService {
     String updateDoctor(UpdateDoctorRequest request);
     String deleteDoctor(Long id);
     Doctor getByUsername(String username);
+    Doctor getByDoctorById(Long id);
 }

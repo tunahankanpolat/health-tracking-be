@@ -10,6 +10,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetAdminResponse {
-    // Fields will be added here
-    private int id;
+    private String name;
+    private String surname;
+    private String username;
+    private String phoneNumber;
+    private String emailAddress;
+    private String address;
 }

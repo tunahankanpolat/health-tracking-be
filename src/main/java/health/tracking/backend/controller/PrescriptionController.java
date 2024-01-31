@@ -4,6 +4,7 @@ import health.tracking.backend.business.abstracts.PrescriptionService;
 import health.tracking.backend.model.request.CreatePrescriptionRequest;
 import health.tracking.backend.model.request.UpdatePrescriptionRequest;
 import health.tracking.backend.model.response.GetPrescriptionResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class PrescriptionController {
     private final PrescriptionService prescriptionService;
 
     @PostMapping
-    public ResponseEntity<String> createPrescription(@RequestBody CreatePrescriptionRequest request) {
+    public ResponseEntity<String> createPrescription(@Valid @RequestBody CreatePrescriptionRequest request) {
         return ResponseEntity.ok(prescriptionService.createPrescription(request));
     }
 
@@ -25,7 +26,7 @@ public class PrescriptionController {
     }
 
     @PutMapping
-    ResponseEntity<String> updatePrescription(@RequestBody UpdatePrescriptionRequest request) {
+    public ResponseEntity<String> updatePrescription(@Valid @RequestBody UpdatePrescriptionRequest request) {
         return ResponseEntity.ok(prescriptionService.updatePrescription(request));
     }
 

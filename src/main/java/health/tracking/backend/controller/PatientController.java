@@ -4,6 +4,7 @@ import health.tracking.backend.business.abstracts.PatientService;
 import health.tracking.backend.model.request.CreatePatientRequest;
 import health.tracking.backend.model.request.UpdatePatientRequest;
 import health.tracking.backend.model.response.GetPatientResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class PatientController {
     private final PatientService patientService;
     @PostMapping
-    public ResponseEntity<String> createPatient(@RequestBody CreatePatientRequest request) {
+    public ResponseEntity<String> createPatient(@Valid @RequestBody CreatePatientRequest request) {
         return ResponseEntity.ok(patientService.createPatient(request));
     }
 
@@ -24,7 +25,7 @@ public class PatientController {
     }
 
     @PutMapping
-    ResponseEntity<String> updatePatient(@RequestBody UpdatePatientRequest request) {
+    public ResponseEntity<String> updatePatient(@Valid @RequestBody UpdatePatientRequest request) {
         return ResponseEntity.ok(patientService.updatePatient(request));
     }
 
