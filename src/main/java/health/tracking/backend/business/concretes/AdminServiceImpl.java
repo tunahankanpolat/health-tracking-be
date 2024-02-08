@@ -71,13 +71,13 @@ public class AdminServiceImpl implements AdminService, UserDetailsService {
     @Override
     public String updateAdmin(UpdateAdminRequest request) {
         Admin admin = adminRepository.findById(request.getId()).orElseThrow(EntityNotFoundException::new);
-
+        //TODO: Implement update logic
+        adminRepository.save(admin);
         return "Admin updated successfully";
     }
 
     @Override
     public String deleteAdmin(Long id) {
-        // Implement delete logic
         adminRepository.deleteById(id);
         return "Admin deleted successfully";
     }

@@ -5,11 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreatePrescriptionRequest {
-    // Fields will be added here
-    private int id;
+    private Long patientId;
+    private Long doctorId;
+    private Date prescriptionDate;
+    private Date expiryDate;
+    private String instructions;
+    private List<CreateDrugUsageRequest> drugUsages;
 }

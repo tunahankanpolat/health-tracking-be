@@ -3,8 +3,6 @@ package health.tracking.backend.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
-
 @Entity
 @Getter
 @Setter
@@ -17,7 +15,6 @@ public class Drug {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Date expiryDate;
     private String instructions;
     private String description;
 }

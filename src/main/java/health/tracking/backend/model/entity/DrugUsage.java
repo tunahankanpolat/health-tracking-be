@@ -20,8 +20,7 @@ public class DrugUsage {
     private Drug drug;
 
     private double dosage;
-    private String frequency;
-    private String notes;
+    private int frequency;
 
     @ManyToOne
     @JoinColumn(name = "prescription_id")

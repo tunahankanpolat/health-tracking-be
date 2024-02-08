@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetDrugUsageResponse {
-    // Fields will be added here
-    private int id;
+    private GetDrugResponse drug;
+    private double dosage;
+    private int frequency;
 }

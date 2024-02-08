@@ -1,6 +1,10 @@
 package health.tracking.backend.business.concretes;
 
+import health.tracking.backend.business.abstracts.DrugService;
 import health.tracking.backend.business.abstracts.DrugUsageService;
+import health.tracking.backend.model.entity.Drug;
+import health.tracking.backend.model.entity.DrugUsage;
+import jakarta.persistence.EntityNotFoundException;
 import health.tracking.backend.model.request.CreateDrugUsageRequest;
 import health.tracking.backend.model.request.UpdateDrugUsageRequest;
 import health.tracking.backend.model.response.GetDrugUsageResponse;
@@ -8,23 +12,34 @@ import health.tracking.backend.repository.DrugUsageRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class DrugUsageServiceImpl implements DrugUsageService {
     private final DrugUsageRepository drugusageRepository;
+    private final DrugService drugService;
 
     @Override
     public String createDrugUsage(CreateDrugUsageRequest request) {
-        // Implement creation logic
-        // Convert request to entity and save
+        Drug drug = drugService.getByDrugById(request.getDrugId());
+        DrugUsage drugusage = DrugUsage.builder()
+                .drug(drug)
+                .dosage(request.getDosage())
+                .frequency(request.getFrequency())
+                .build();
+        drugusageRepository.save(drugusage);  // Save entity
         return "DrugUsage created successfully";  // Return response
     }
 
     @Override
     public GetDrugUsageResponse getDrugUsage(Long id) {
-        // Implement read logic
-        // Find entity and convert to response
-        return new GetDrugUsageResponse();
+        DrugUsage drugusage = drugusageRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return GetDrugUsageResponse.builder()
+                .drug(drugService.getDrug(drugusage.getDrug().getId()))
+                .dosage(drugusage.getDosage())
+                .frequency(drugusage.getFrequency())
+                .build();
     }
 
     @Override
@@ -39,5 +54,11 @@ public class DrugUsageServiceImpl implements DrugUsageService {
         // Implement delete logic
         drugusageRepository.deleteById(id);
         return "DrugUsage deleted successfully";
+    }
+
+    @Override
+    public String createDrugUsages(List<DrugUsage> drugUsages) {
+        drugusageRepository.saveAll(drugUsages);
+        return "DrugUsages created successfully";
     }
 }

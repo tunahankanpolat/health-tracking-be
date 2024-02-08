@@ -69,7 +69,7 @@ public class PatientServiceImpl implements PatientService, UserDetailsService {
                 .build();
 
         patientRepository.save(newPatient);
-        return "Patient Relative created successfully";
+        return "Patient created successfully";
     }
 
     @Override

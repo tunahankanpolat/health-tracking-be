@@ -14,19 +14,15 @@ import java.util.Date;
 @NoArgsConstructor
 public class CreatePatientRequest {
     private Long doctorId;
-    @NotBlank(message = "Name can not be blank")
     @NotNull(message = "Name is mandatory")
     @Size(min = 3, max = 20, message = "Name must be between 3 and 20 characters long")
     private String name;
-    @NotBlank(message = "Surname can not be blank")
     @NotNull(message = "Surname is mandatory")
     @Size(min = 3, max = 20, message = "Surname must be between 3 and 20 characters long")
     private String surname;
-    @NotBlank(message = "Username can not be blank")
     @NotNull(message = "Username is mandatory")
     @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters long")
     private String username;
-    @NotBlank(message = "Password can not be blank")
     @NotNull(message = "Password is mandatory")
     @Size(min = 8, max = 20, message = "Password must be between 8 and 20 characters long")
     private String password;
@@ -37,7 +33,6 @@ public class CreatePatientRequest {
     private int weight;
     private String bloodType;
     private String rfidTag;
-    @NotBlank(message = "Phone number can not be blank")
     @NotNull(message = "Phone number is mandatory")
     @Size(min = 3, max = 20, message = "Phone number must be between 3 and 20 characters long")
     private String phoneNumber;

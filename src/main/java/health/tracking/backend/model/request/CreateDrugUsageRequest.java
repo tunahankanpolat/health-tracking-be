@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateDrugUsageRequest {
-    // Fields will be added here
-    private int id;
+    private Long drugId;
+    private double dosage;
+    private int frequency;
 }

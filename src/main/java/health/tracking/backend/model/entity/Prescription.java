@@ -29,6 +29,6 @@ public class Prescription {
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 
-    @OneToMany(mappedBy = "prescription")
+    @OneToMany(mappedBy = "prescription", cascade = CascadeType.PERSIST)
     private List<DrugUsage> drugUsages;
 }
