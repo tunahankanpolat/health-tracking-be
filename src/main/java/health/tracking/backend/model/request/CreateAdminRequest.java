@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateAdminRequest implements CreateUserRequest{
+public class CreateAdminRequest{
 
     @NotNull(message = "Name is mandatory")
     @Size(min = 3, max = 20, message = "Name must be between 3 and 20 characters long")
