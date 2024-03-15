@@ -43,13 +43,13 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(configurer -> configurer.configurationSource(corsConfigurationSource))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/", "/error", "/api/test/v1/login", "/api/test/v1/token", "/v3/api-docs", "/api-docs.yaml", "/swagger-ui.html", "/v3/**", "/v3/api-docs/**").permitAll()
+/*                        .requestMatchers("/", "/error", "/api/test/v1/login", "/api/test/v1/token", "/v3/api-docs", "/api-docs.yaml", "/swagger-ui.html", "/v3/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/admin/v1/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/drug/v1/**").hasAnyAuthority( "ADMIN")
                         .requestMatchers("/api/doctor/v1/**").hasAnyAuthority("DOCTOR", "ADMIN")
                         .requestMatchers("/api/patient/v1/**").hasAnyAuthority("PATIENT", "ADMIN", "DOCTOR")
-                        .requestMatchers("/api/prescription/v1/**").hasAnyAuthority( "ADMIN", "DOCTOR")
-                        .anyRequest().authenticated()
+                        .requestMatchers("/api/prescription/v1/**").hasAnyAuthority( "ADMIN", "DOCTOR")*/
+                        .anyRequest().permitAll()
                 )
                 .sessionManagement(config ->
                     config.sessionCreationPolicy(SessionCreationPolicy.STATELESS)

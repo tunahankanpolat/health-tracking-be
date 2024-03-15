@@ -3,6 +3,7 @@ package health.tracking.backend.controller;
 import health.tracking.backend.business.concretes.AdminServiceImpl;
 import health.tracking.backend.business.concretes.DoctorServiceImpl;
 import health.tracking.backend.core.utils.jwt.JwtUtils;
+import health.tracking.backend.model.Role;
 import health.tracking.backend.model.request.CreateAdminRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,6 @@ public class Test {
                 .build();
         log.error("request: {}", request);
         adminService.createAdmin(request);
-        return ResponseEntity.ok(jwtUtils.generateToken(request.getUsername()));
+        return ResponseEntity.ok(jwtUtils.generateToken(request.getUsername(), Role.ADMIN));
     }
 }
