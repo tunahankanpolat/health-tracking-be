@@ -22,6 +22,7 @@ public class User implements UserDetails {
     private Long id;
     private String name;
     private String surname;
+    @Column(unique = true)
     private String username;
     private String password;
     @Column(name = "registration_date")
