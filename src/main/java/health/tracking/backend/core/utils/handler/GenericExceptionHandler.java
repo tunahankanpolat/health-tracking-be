@@ -1,7 +1,9 @@
 package health.tracking.backend.core.utils.handler;
 
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -31,5 +33,12 @@ public class GenericExceptionHandler {
         Map<String, String> errorResponseMap = new HashMap<>();
         errorResponseMap.put(ERROR_KEY, e.getMessage());
         return ResponseEntity.badRequest().body(errorResponseMap);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Map<String, String>> handleBadCredentialsException(BadCredentialsException e) {
+        Map<String, String> errorResponseMap = new HashMap<>();
+        errorResponseMap.put(ERROR_KEY, e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponseMap);
     }
 }

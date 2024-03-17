@@ -2,6 +2,7 @@ package health.tracking.backend.business.concretes;
 
 import health.tracking.backend.business.abstracts.PatientRelativeService;
 import health.tracking.backend.business.abstracts.PatientService;
+import health.tracking.backend.exception.UserAlreadyExistsException;
 import health.tracking.backend.model.Role;
 import health.tracking.backend.model.entity.PatientRelative;
 import health.tracking.backend.model.entity.User;
@@ -9,6 +10,7 @@ import health.tracking.backend.model.request.CreatePatientRelativeRequest;
 import health.tracking.backend.model.request.UpdatePatientRelativeRequest;
 import health.tracking.backend.model.response.GetPatientRelativeResponse;
 import health.tracking.backend.repository.PatientRelativeRepository;
+import health.tracking.backend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,6 +28,8 @@ public class PatientRelativeServiceImpl implements PatientRelativeService, UserD
     private final PatientRelativeRepository patientRelativeRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final PatientService patientService;
+    private final UserRepository userRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return this.getByUsername(username);
@@ -34,6 +38,9 @@ public class PatientRelativeServiceImpl implements PatientRelativeService, UserD
         return patientRelativeRepository.findByUserUsername(username);
     }
     public String createPatientRelative(CreatePatientRelativeRequest request) {
+        if(userRepository.findByUsername(request.getUsername()) != null) {
+            throw new UserAlreadyExistsException();
+        }
         User user = User.builder()
                 .name(request.getName())
                 .surname(request.getSurname())

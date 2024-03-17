@@ -1,6 +1,7 @@
 package health.tracking.backend.business.concretes;
 
 import health.tracking.backend.business.abstracts.AdminService;
+import health.tracking.backend.exception.UserAlreadyExistsException;
 import health.tracking.backend.model.Role;
 import health.tracking.backend.model.entity.Admin;
 import health.tracking.backend.model.entity.User;
@@ -8,6 +9,7 @@ import health.tracking.backend.model.request.CreateAdminRequest;
 import health.tracking.backend.model.request.UpdateAdminRequest;
 import health.tracking.backend.model.response.GetAdminResponse;
 import health.tracking.backend.repository.AdminRepository;
+import health.tracking.backend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +26,7 @@ import java.util.Date;
 public class AdminServiceImpl implements AdminService, UserDetailsService {
     private final AdminRepository adminRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -33,6 +36,9 @@ public class AdminServiceImpl implements AdminService, UserDetailsService {
         return adminRepository.findByUserUsername(username);
     }
     public String createAdmin(CreateAdminRequest request) {
+        if(userRepository.findByUsername(request.getUsername()) != null) {
+            throw new UserAlreadyExistsException();
+        }
         User user = User.builder()
                 .name(request.getName())
                 .surname(request.getSurname())
