@@ -40,7 +40,7 @@ public class PatientServiceImpl implements PatientService, UserDetailsService {
 
     @Override
     public Patient getByPatientById(Long id) {
-        return patientRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return patientRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Patient with id " + id + " does not exist"));
     }
 
     public String createPatient(CreatePatientRequest request) {
@@ -80,7 +80,7 @@ public class PatientServiceImpl implements PatientService, UserDetailsService {
 
     @Override
     public GetPatientResponse getPatient(Long id) {
-        Patient patient = patientRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Patient patient = this.getByPatientById(id);
         return GetPatientResponse.builder()
                 .name(patient.getUser().getName())
                 .surname(patient.getUser().getSurname())

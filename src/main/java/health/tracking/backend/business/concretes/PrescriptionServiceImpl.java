@@ -11,7 +11,6 @@ import health.tracking.backend.model.request.UpdatePrescriptionRequest;
 import health.tracking.backend.model.response.GetDrugUsageResponse;
 import health.tracking.backend.model.response.GetPrescriptionResponse;
 import health.tracking.backend.repository.PrescriptionRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,7 +29,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     @Override
     public Prescription getPrescriptionById(Long id) {
-        return prescriptionRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return prescriptionRepository.findById(id).orElseThrow(() -> new RuntimeException("Prescription with id " + id + " does not exist"));
     }
     @Override
     @Transactional
@@ -47,7 +46,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
                 .build();
         for (CreateDrugUsageRequest drugUsageRequest : request.getDrugUsages()) {
             DrugUsage drugUsage = DrugUsage.builder()
-                    .drug(drugService.getByDrugById(drugUsageRequest.getDrugId()))
+                    .drug(drugService.getDrugById(drugUsageRequest.getDrugId()))
                     .dosage(drugUsageRequest.getDosage())
                     .prescription(prescription)
                     .build();

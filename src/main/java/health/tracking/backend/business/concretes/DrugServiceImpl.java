@@ -28,7 +28,7 @@ public class DrugServiceImpl implements DrugService {
 
     @Override
     public GetDrugResponse getDrug(Long id) {
-        Drug drug = drugRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Drug drug = getDrugById(id);
         return GetDrugResponse.builder()
                 .name(drug.getName())
                 .instructions(drug.getInstructions())
@@ -38,7 +38,7 @@ public class DrugServiceImpl implements DrugService {
 
     @Override
     public String updateDrug(UpdateDrugRequest request) {
-        Drug drug = drugRepository.findById(request.getId()).orElseThrow(EntityNotFoundException::new);
+        Drug drug = getDrugById(request.getId());
         //TODO: Implement update logic
         drugRepository.save(drug);
         return "Drug updated successfully";
@@ -51,7 +51,7 @@ public class DrugServiceImpl implements DrugService {
     }
 
     @Override
-    public Drug getByDrugById(Long id) {
-        return drugRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    public Drug getDrugById(Long id) {
+        return drugRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Drug with id " + id + " does not exist"));
     }
 }

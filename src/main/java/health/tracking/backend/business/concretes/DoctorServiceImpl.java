@@ -38,7 +38,7 @@ public class DoctorServiceImpl implements DoctorService, UserDetailsService {
 
     @Override
     public Doctor getByDoctorById(Long id) {
-        return doctorRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return doctorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Doctor with id " + id + " does not exist"));
     }
 
     public String createDoctor(CreateDoctorRequest request) {
@@ -71,7 +71,7 @@ public class DoctorServiceImpl implements DoctorService, UserDetailsService {
 
     @Override
     public GetDoctorResponse getDoctor(Long id) {
-        Doctor doctor = doctorRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Doctor doctor = this.getByDoctorById(id);
         return GetDoctorResponse.builder()
                 .name(doctor.getUser().getName())
                 .surname(doctor.getUser().getSurname())

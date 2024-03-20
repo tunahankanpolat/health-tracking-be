@@ -35,6 +35,10 @@ public class AdminServiceImpl implements AdminService, UserDetailsService {
     public Admin getByUsername(String username) {
         return adminRepository.findByUserUsername(username);
     }
+
+    private Admin getByAdminById(Long id) {
+        return adminRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Admin with id " + id + " does not exist"));
+    }
     public String createAdmin(CreateAdminRequest request) {
         if(userRepository.findByUsername(request.getUsername()) != null) {
             throw new UserAlreadyExistsException();
@@ -63,7 +67,7 @@ public class AdminServiceImpl implements AdminService, UserDetailsService {
 
     @Override
     public GetAdminResponse getAdmin(Long id) {
-        Admin admin = adminRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Admin admin = this.getByAdminById(id);
         return GetAdminResponse.builder()
                 .name(admin.getUser().getName())
                 .surname(admin.getUser().getSurname())
@@ -76,7 +80,7 @@ public class AdminServiceImpl implements AdminService, UserDetailsService {
 
     @Override
     public String updateAdmin(UpdateAdminRequest request) {
-        Admin admin = adminRepository.findById(request.getId()).orElseThrow(EntityNotFoundException::new);
+        Admin admin = this.getByAdminById(request.getId());
         //TODO: Implement update logic
         adminRepository.save(admin);
         return "Admin updated successfully";

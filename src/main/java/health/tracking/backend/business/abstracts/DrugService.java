@@ -10,5 +10,5 @@ public interface DrugService {
     GetDrugResponse getDrug(Long id);
     String updateDrug(UpdateDrugRequest request);
     String deleteDrug(Long id);
-    Drug getByDrugById(Long id);
+    Drug getDrugById(Long id);
 }

@@ -20,9 +20,13 @@ public class DrugUsageServiceImpl implements DrugUsageService {
     private final DrugUsageRepository drugusageRepository;
     private final DrugService drugService;
 
+    public DrugUsage getDrugUsageById(Long id) {
+        return drugusageRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("DrugUsage with id " + id + " does not exist"));
+    }
+
     @Override
     public String createDrugUsage(CreateDrugUsageRequest request) {
-        Drug drug = drugService.getByDrugById(request.getDrugId());
+        Drug drug = drugService.getDrugById(request.getDrugId());
         DrugUsage drugusage = DrugUsage.builder()
                 .drug(drug)
                 .dosage(request.getDosage())
@@ -34,7 +38,7 @@ public class DrugUsageServiceImpl implements DrugUsageService {
 
     @Override
     public GetDrugUsageResponse getDrugUsage(Long id) {
-        DrugUsage drugusage = drugusageRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        DrugUsage drugusage = this.getDrugUsageById(id);
         return GetDrugUsageResponse.builder()
                 .drug(drugService.getDrug(drugusage.getDrug().getId()))
                 .dosage(drugusage.getDosage())

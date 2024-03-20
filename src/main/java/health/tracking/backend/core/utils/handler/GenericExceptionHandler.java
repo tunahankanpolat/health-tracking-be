@@ -1,5 +1,6 @@
 package health.tracking.backend.core.utils.handler;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,5 +41,12 @@ public class GenericExceptionHandler {
         Map<String, String> errorResponseMap = new HashMap<>();
         errorResponseMap.put(ERROR_KEY, e.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponseMap);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleEntityNotFoundException(EntityNotFoundException e) {
+        Map<String, String> errorResponseMap = new HashMap<>();
+        errorResponseMap.put(ERROR_KEY, e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponseMap);
     }
 }

@@ -37,6 +37,10 @@ public class PatientRelativeServiceImpl implements PatientRelativeService, UserD
     public PatientRelative getByUsername(String username) {
         return patientRelativeRepository.findByUserUsername(username);
     }
+
+    public PatientRelative getByPatientRelativeById(Long id) {
+        return patientRelativeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("PatientRelative with id " + id + " does not exist"));
+    }
     public String createPatientRelative(CreatePatientRelativeRequest request) {
         if(userRepository.findByUsername(request.getUsername()) != null) {
             throw new UserAlreadyExistsException();
@@ -69,7 +73,7 @@ public class PatientRelativeServiceImpl implements PatientRelativeService, UserD
 
     @Override
     public GetPatientRelativeResponse getPatientRelative(Long id) {
-        PatientRelative patientRelative = patientRelativeRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        PatientRelative patientRelative = this.getByPatientRelativeById(id);
         return GetPatientRelativeResponse.builder()
                 .name(patientRelative.getUser().getName())
                 .surname(patientRelative.getUser().getSurname())
