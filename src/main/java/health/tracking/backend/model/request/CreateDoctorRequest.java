@@ -1,6 +1,7 @@
 package health.tracking.backend.model.request;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,9 @@ public class CreateDoctorRequest {
     @NotNull(message = "Specialization is mandatory")
     @Size(min = 3, max = 20, message = "Specialization must be between 3 and 20 characters long")
     private String specialization;
+    @NotNull(message = "Phone number is mandatory")
+    @NotBlank(message = "Phone number can not be blank")
+    @Size(min = 11, max = 11, message = "Phone number must be 11 characters long")
     private String phoneNumber;
     @Email(message = "Email address must be valid")
     private String emailAddress;

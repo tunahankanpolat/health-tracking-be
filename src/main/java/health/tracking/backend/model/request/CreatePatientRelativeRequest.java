@@ -30,7 +30,8 @@ public class CreatePatientRelativeRequest {
     @Size(min = 8, max = 20, message = "Password must be between 8 and 20 characters long")
     private String password;
     @NotNull(message = "Phone number is mandatory")
-    @Size(min = 3, max = 20, message = "Phone number must be between 3 and 20 characters long")
+    @NotBlank(message = "Phone number can not be blank")
+    @Size(min = 11, max = 11, message = "Phone number must be 11 characters long")
     private String phoneNumber;
     @Email(message = "Email address must be valid")
     private String emailAddress;
