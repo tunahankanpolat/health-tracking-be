@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/drug/v1")
 @AllArgsConstructor
@@ -33,5 +35,10 @@ public class DrugController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteDrug(@PathVariable Long id) {
         return ResponseEntity.ok(drugService.deleteDrug(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<GetDrugResponse>> getDrugs() {
+        return ResponseEntity.ok(drugService.getDrugs());
     }
 }

@@ -10,6 +10,8 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class DrugServiceImpl implements DrugService {
@@ -53,5 +55,18 @@ public class DrugServiceImpl implements DrugService {
     @Override
     public Drug getDrugById(Long id) {
         return drugRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Drug with id " + id + " does not exist"));
+    }
+
+    @Override
+    public List<GetDrugResponse> getDrugs() {
+        List<Drug> drugs = drugRepository.findAll();
+        return drugs.stream()
+                .map(drug -> GetDrugResponse.builder()
+                        .id(drug.getId())
+                        .name(drug.getName())
+                        .instructions(drug.getInstructions())
+                        .description(drug.getDescription())
+                        .build())
+                .toList();
     }
 }

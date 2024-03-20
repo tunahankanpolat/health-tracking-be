@@ -15,6 +15,8 @@ public class Drug {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @Column(length = 10000)
     private String instructions;
+    @Column(length = 10000)
     private String description;
 }

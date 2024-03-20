@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -39,6 +40,21 @@ public class DoctorServiceImpl implements DoctorService, UserDetailsService {
     @Override
     public Doctor getByDoctorById(Long id) {
         return doctorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Doctor with id " + id + " does not exist"));
+    }
+
+    @Override
+    public List<GetDoctorResponse> getDoctors() {
+        List<Doctor> doctors = doctorRepository.findAll();
+        return doctors.stream().map(doctor -> GetDoctorResponse.builder()
+                .id(doctor.getId())
+                .name(doctor.getUser().getName())
+                .surname(doctor.getUser().getSurname())
+                .username(doctor.getUser().getUsername())
+                .phoneNumber(doctor.getUser().getPhoneNumber())
+                .emailAddress(doctor.getUser().getEmailAddress())
+                .address(doctor.getUser().getAddress())
+                .specialization(doctor.getSpecialization())
+                .build()).toList();
     }
 
     public String createDoctor(CreateDoctorRequest request) {
