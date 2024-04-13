@@ -13,9 +13,6 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreatePatientRequest {
-    private Long doctorId;
-    @NotNull(message = "Name is mandatory")
-    @Size(min = 3, max = 20, message = "Name must be between 3 and 20 characters long")
     private String name;
     @NotNull(message = "Surname is mandatory")
     @Size(min = 3, max = 20, message = "Surname must be between 3 and 20 characters long")

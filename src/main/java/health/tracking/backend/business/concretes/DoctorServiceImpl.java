@@ -4,10 +4,12 @@ import health.tracking.backend.business.abstracts.DoctorService;
 import health.tracking.backend.exception.UserAlreadyExistsException;
 import health.tracking.backend.model.Role;
 import health.tracking.backend.model.entity.Doctor;
+import health.tracking.backend.model.entity.Patient;
 import health.tracking.backend.model.entity.User;
 import health.tracking.backend.model.request.CreateDoctorRequest;
 import health.tracking.backend.model.request.UpdateDoctorRequest;
 import health.tracking.backend.model.response.GetDoctorResponse;
+import health.tracking.backend.model.response.GetPatientResponse;
 import health.tracking.backend.repository.DoctorRepository;
 import health.tracking.backend.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -54,6 +56,27 @@ public class DoctorServiceImpl implements DoctorService, UserDetailsService {
                 .emailAddress(doctor.getUser().getEmailAddress())
                 .address(doctor.getUser().getAddress())
                 .specialization(doctor.getSpecialization())
+                .build()).toList();
+    }
+
+    @Override
+    public List<GetPatientResponse> getPatients(Long doctorId) {
+        Doctor doctor = this.getByDoctorById(doctorId);
+        List<Patient> patients = doctor.getPatients();
+        return patients.stream().map(patient -> GetPatientResponse.builder()
+                .id(patient.getId())
+                .name(patient.getUser().getName())
+                .surname(patient.getUser().getSurname())
+                .username(patient.getUser().getUsername())
+                .phoneNumber(patient.getUser().getPhoneNumber())
+                .emailAddress(patient.getUser().getEmailAddress())
+                .address(patient.getUser().getAddress())
+                .birthDate(patient.getBirthDate())
+                .gender(patient.getGender())
+                .height(patient.getHeight())
+                .weight(patient.getWeight())
+                .bloodType(patient.getBloodType())
+                .rfidTag(patient.getRfidTag())
                 .build()).toList();
     }
 

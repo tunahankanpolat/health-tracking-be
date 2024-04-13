@@ -49,7 +49,9 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/doctor/v1/**").hasAnyAuthority("DOCTOR", "ADMIN")
                         .requestMatchers("/api/patient/v1/**").hasAnyAuthority("PATIENT", "ADMIN", "DOCTOR")
                         .requestMatchers("/api/prescription/v1/**").hasAnyAuthority( "ADMIN", "DOCTOR")*/
-                        .anyRequest().permitAll()
+                                .requestMatchers("/api/patient/v1/**").hasAnyAuthority("DOCTOR", "ADMIN")
+
+                                .anyRequest().permitAll()
                 )
                 .sessionManagement(config ->
                     config.sessionCreationPolicy(SessionCreationPolicy.STATELESS)

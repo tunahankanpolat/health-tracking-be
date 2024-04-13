@@ -1,12 +1,13 @@
 package health.tracking.backend.controller;
 
 import health.tracking.backend.business.abstracts.PrescriptionService;
+import health.tracking.backend.model.entity.Doctor;
 import health.tracking.backend.model.request.CreatePrescriptionRequest;
 import health.tracking.backend.model.request.UpdatePrescriptionRequest;
-import health.tracking.backend.model.response.GetPrescriptionResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,13 +17,8 @@ public class PrescriptionController {
     private final PrescriptionService prescriptionService;
 
     @PostMapping
-    public ResponseEntity<String> createPrescription(@Valid @RequestBody CreatePrescriptionRequest request) {
-        return ResponseEntity.ok(prescriptionService.createPrescription(request));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<GetPrescriptionResponse> getPrescription(@PathVariable Long id) {
-        return ResponseEntity.ok(prescriptionService.getPrescription(id));
+    public ResponseEntity<String> createPrescription(@Valid @RequestBody CreatePrescriptionRequest request, @AuthenticationPrincipal Doctor principal) {
+        return ResponseEntity.ok(prescriptionService.createPrescription(request, principal.getId()));
     }
 
     @PutMapping

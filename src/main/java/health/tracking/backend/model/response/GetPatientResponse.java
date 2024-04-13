@@ -12,6 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetPatientResponse {
+    private Long id;
     private String name;
     private String surname;
     private String username;

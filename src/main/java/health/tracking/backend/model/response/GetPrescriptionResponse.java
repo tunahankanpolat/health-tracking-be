@@ -13,8 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetPrescriptionResponse {
-    private GetPatientResponse patient;
-    private GetDoctorResponse doctor;
+    private Long prescriptionId;
     private Date prescriptionDate;
     private Date expiryDate;
     private String instructions;

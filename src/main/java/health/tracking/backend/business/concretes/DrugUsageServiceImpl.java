@@ -40,7 +40,8 @@ public class DrugUsageServiceImpl implements DrugUsageService {
     public GetDrugUsageResponse getDrugUsage(Long id) {
         DrugUsage drugusage = this.getDrugUsageById(id);
         return GetDrugUsageResponse.builder()
-                .drug(drugService.getDrug(drugusage.getDrug().getId()))
+                .drugUsageId(drugusage.getId())
+                .drugName(drugusage.getDrug().getName())
                 .dosage(drugusage.getDosage())
                 .frequency(drugusage.getFrequency())
                 .build();

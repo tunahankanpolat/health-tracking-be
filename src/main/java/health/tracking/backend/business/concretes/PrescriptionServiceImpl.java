@@ -8,15 +8,12 @@ import health.tracking.backend.model.entity.Prescription;
 import health.tracking.backend.model.request.CreateDrugUsageRequest;
 import health.tracking.backend.model.request.CreatePrescriptionRequest;
 import health.tracking.backend.model.request.UpdatePrescriptionRequest;
-import health.tracking.backend.model.response.GetDrugUsageResponse;
-import health.tracking.backend.model.response.GetPrescriptionResponse;
 import health.tracking.backend.repository.PrescriptionRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -33,8 +30,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     }
     @Override
     @Transactional
-    public String createPrescription(CreatePrescriptionRequest request) {
-        Doctor doctor = doctorService.getByDoctorById(request.getDoctorId());
+    public String createPrescription(CreatePrescriptionRequest request, Long doctorId) {
+        Doctor doctor = doctorService.getByDoctorById(doctorId);
         Patient patient = patientService.getByPatientById(request.getPatientId());
         Prescription prescription = Prescription.builder()
                 .doctor(doctor)
@@ -54,28 +51,6 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         }
         prescriptionRepository.save(prescription);  // Save entity
         return "Prescription created successfully";  // Return response
-    }
-
-    @Override
-    public GetPrescriptionResponse getPrescription(Long id) {
-        Prescription prescription = this.getPrescriptionById(id);
-        List<GetDrugUsageResponse> drugUsagesResponse = new ArrayList<>();
-        for (DrugUsage drugUsage : prescription.getDrugUsages()) {
-            GetDrugUsageResponse drugUsageResponse = GetDrugUsageResponse.builder()
-                    .drug(drugService.getDrug(drugUsage.getDrug().getId()))
-                    .dosage(drugUsage.getDosage())
-                    .frequency(drugUsage.getFrequency())
-                    .build();
-            drugUsagesResponse.add(drugUsageResponse);
-        }
-        return GetPrescriptionResponse.builder()
-                .doctor(doctorService.getDoctor(prescription.getDoctor().getId()))
-                .patient(patientService.getPatient(prescription.getPatient().getId()))
-                .instructions(prescription.getInstructions())
-                .prescriptionDate(prescription.getPrescriptionDate())
-                .expiryDate(prescription.getExpiryDate())
-                .drugUsages(drugUsagesResponse)
-                .build();
     }
 
     @Override

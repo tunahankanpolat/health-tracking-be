@@ -28,12 +28,7 @@ public class Doctor implements UserDetails {
 
     private String specialization;
 
-    @ManyToMany
-    @JoinTable(
-        name = "doctor_patient",
-        joinColumns = @JoinColumn(name = "doctor_id"),
-        inverseJoinColumns = @JoinColumn(name = "patient_id")
-    )
+    @ManyToMany(mappedBy = "doctors")
     private List<Patient> patients;
 
     @OneToMany(mappedBy = "doctor")

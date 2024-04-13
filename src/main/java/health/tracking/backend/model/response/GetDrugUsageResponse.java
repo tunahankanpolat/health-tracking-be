@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetDrugUsageResponse {
-    private GetDrugResponse drug;
+    private Long drugUsageId;
+    private String drugName;
     private double dosage;
     private int frequency;
 }

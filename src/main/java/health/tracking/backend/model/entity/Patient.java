@@ -46,7 +46,12 @@ public class Patient implements UserDetails {
     @OneToMany(mappedBy = "patient")
     private List<PatientRelative> patientRelatives;
 
-    @ManyToMany(mappedBy = "patients")
+    @ManyToMany
+    @JoinTable(
+            name = "doctor_patient",
+            joinColumns = @JoinColumn(name = "patient_id"),
+            inverseJoinColumns = @JoinColumn(name = "doctor_id")
+    )
     private List<Doctor> doctors;
 
     @OneToMany(mappedBy = "patient")
