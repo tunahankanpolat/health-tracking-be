@@ -1,6 +1,7 @@
 package health.tracking.backend.controller;
 
 import health.tracking.backend.core.utils.jwt.JwtUtils;
+import health.tracking.backend.model.entity.ExtendedUserDetails;
 import health.tracking.backend.model.request.AuthRequest;
 import health.tracking.backend.model.response.AuthResponse;
 import lombok.AllArgsConstructor;
@@ -26,10 +27,12 @@ public class AuthController {
                 authenticate(new UsernamePasswordAuthenticationToken
                         (request.getUsername(), request.getPassword()));
         GrantedAuthority role = authentication.getAuthorities().stream().findFirst().get();
-        if(authentication.isAuthenticated())
+        if(authentication.isAuthenticated()){
+            ExtendedUserDetails userDetails = (ExtendedUserDetails) authentication.getPrincipal();
             return ResponseEntity.ok(AuthResponse.builder().
-                    token(jwtUtils.generateToken(request.getUsername(), role))
-                            .build());
+                    token(jwtUtils.generateToken(userDetails.getUsername(), role, userDetails.getId()))
+                    .build());
+        }
         return ResponseEntity.badRequest().build();
     }
 }

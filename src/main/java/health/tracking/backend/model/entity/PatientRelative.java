@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
@@ -14,7 +13,7 @@ import java.util.Collection;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PatientRelative implements UserDetails {
+public class PatientRelative implements ExtendedUserDetails {
     @NotNull
     @JoinColumn(name = "user_id")
     @OneToOne(cascade = CascadeType.ALL)
