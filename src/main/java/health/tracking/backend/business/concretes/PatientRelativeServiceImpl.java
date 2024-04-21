@@ -4,6 +4,7 @@ import health.tracking.backend.business.abstracts.PatientRelativeService;
 import health.tracking.backend.business.abstracts.PatientService;
 import health.tracking.backend.exception.UserAlreadyExistsException;
 import health.tracking.backend.model.Role;
+import health.tracking.backend.model.entity.Patient;
 import health.tracking.backend.model.entity.PatientRelative;
 import health.tracking.backend.model.entity.User;
 import health.tracking.backend.model.request.CreatePatientRelativeRequest;
@@ -41,7 +42,7 @@ public class PatientRelativeServiceImpl implements PatientRelativeService, UserD
     public PatientRelative getByPatientRelativeById(Long id) {
         return patientRelativeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("PatientRelative with id " + id + " does not exist"));
     }
-    public String createPatientRelative(CreatePatientRelativeRequest request) {
+    public String createPatientRelative(CreatePatientRelativeRequest request, Patient patient) {
         if(userRepository.findByUsername(request.getUsername()) != null) {
             throw new UserAlreadyExistsException();
         }
@@ -63,7 +64,7 @@ public class PatientRelativeServiceImpl implements PatientRelativeService, UserD
 
         PatientRelative newPatientRelative = PatientRelative.builder()
                 .user(user)
-                .patient(patientService.getByPatientById(request.getPatientId()))
+                .patient(patient)
                 .relationship(request.getRelationship())
                 .build();
 

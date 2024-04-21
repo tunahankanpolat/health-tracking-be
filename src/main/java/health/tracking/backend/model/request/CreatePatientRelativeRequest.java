@@ -14,9 +14,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreatePatientRelativeRequest {
-    @NotNull(message = "Patient id is mandatory")
-    @NotBlank(message = "Patient id can not be blank")
-    private Long patientId;
     @NotNull(message = "Name is mandatory")
     @Size(min = 3, max = 20, message = "Name must be between 3 and 20 characters long")
     private String name;

@@ -1,12 +1,15 @@
 package health.tracking.backend.controller;
 
 import health.tracking.backend.business.abstracts.PatientRelativeService;
+import health.tracking.backend.model.entity.Patient;
+import health.tracking.backend.model.entity.PatientRelative;
 import health.tracking.backend.model.request.CreatePatientRelativeRequest;
 import health.tracking.backend.model.request.UpdatePatientRelativeRequest;
 import health.tracking.backend.model.response.GetPatientRelativeResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,8 +19,13 @@ public class PatientRelativeController {
     private final PatientRelativeService patientRelativeService;
 
     @PostMapping
-    public ResponseEntity<String> createPatientRelative(@Valid @RequestBody CreatePatientRelativeRequest request) {
-        return ResponseEntity.ok(patientRelativeService.createPatientRelative(request));
+    public ResponseEntity<String> createPatientRelative(@Valid @RequestBody CreatePatientRelativeRequest request, @AuthenticationPrincipal Patient principal) {
+        return ResponseEntity.ok(patientRelativeService.createPatientRelative(request, principal));
+    }
+
+    @GetMapping("/patient-id")
+    public ResponseEntity<Long> getPatientRelativeByPatientId(@AuthenticationPrincipal PatientRelative principal) {
+        return ResponseEntity.ok(principal.getPatient().getId());
     }
 
     @GetMapping("/{id}")
