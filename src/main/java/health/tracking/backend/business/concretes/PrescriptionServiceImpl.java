@@ -45,6 +45,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             DrugUsage drugUsage = DrugUsage.builder()
                     .drug(drugService.getDrugById(drugUsageRequest.getDrugId()))
                     .dosage(drugUsageRequest.getDosage())
+                    .frequency(drugUsageRequest.getFrequency())
                     .prescription(prescription)
                     .build();
             prescription.getDrugUsages().add(drugUsage);

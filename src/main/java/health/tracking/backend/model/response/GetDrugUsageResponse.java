@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GetDrugUsageResponse {
     private Long drugUsageId;
+    private Long drugId;
     private String drugName;
     private double dosage;
     private int frequency;

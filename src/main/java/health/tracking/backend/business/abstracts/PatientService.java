@@ -3,6 +3,7 @@ package health.tracking.backend.business.abstracts;
 import health.tracking.backend.model.entity.Patient;
 import health.tracking.backend.model.request.CreatePatientRequest;
 import health.tracking.backend.model.request.UpdatePatientRequest;
+import health.tracking.backend.model.response.GetDrugUsageResponse;
 import health.tracking.backend.model.response.GetPatientResponse;
 import health.tracking.backend.model.response.GetPrescriptionResponse;
 
@@ -17,4 +18,6 @@ public interface PatientService {
     Patient getByPatientById(Long id);
     List<GetPatientResponse> getPatients();
     List<GetPrescriptionResponse> getPatientPrescriptions(Long id);
+
+    List<GetDrugUsageResponse> getPatientDrugUsages(Long id);
 }

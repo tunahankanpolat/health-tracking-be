@@ -4,6 +4,7 @@ import health.tracking.backend.business.abstracts.PatientService;
 import health.tracking.backend.model.entity.Doctor;
 import health.tracking.backend.model.request.CreatePatientRequest;
 import health.tracking.backend.model.request.UpdatePatientRequest;
+import health.tracking.backend.model.response.GetDrugUsageResponse;
 import health.tracking.backend.model.response.GetPatientResponse;
 import health.tracking.backend.model.response.GetPrescriptionResponse;
 import jakarta.validation.Valid;
@@ -27,6 +28,11 @@ public class PatientController {
     @GetMapping("/{id}/prescriptions")
     public ResponseEntity<List<GetPrescriptionResponse>> getPatientPrescriptions(@PathVariable Long id) {
         return ResponseEntity.ok(patientService.getPatientPrescriptions(id));
+    }
+
+    @GetMapping("/{id}/drug-usages")
+    public ResponseEntity<List<GetDrugUsageResponse>> getPatientDrugUsages(@PathVariable Long id) {
+        return ResponseEntity.ok(patientService.getPatientDrugUsages(id));
     }
 
     @GetMapping("/{id}")

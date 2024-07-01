@@ -85,6 +85,22 @@ public class PatientServiceImpl implements PatientService, UserDetailsService {
                 .build()).toList();
     }
 
+    @Override
+    public List<GetDrugUsageResponse> getPatientDrugUsages(Long id) {
+        Patient patient = this.getByPatientById(id);
+        return patient.getPrescriptions().stream()
+                .flatMap(prescription ->
+                        prescription.getDrugUsages().stream()
+                .map(drugUsage ->
+                        GetDrugUsageResponse.builder()
+                .drugUsageId(drugUsage.getId())
+                .drugId(drugUsage.getDrug().getId())
+                .drugName(drugUsage.getDrug().getName())
+                .dosage(drugUsage.getDosage())
+                .frequency(drugUsage.getFrequency())
+                .build())).toList();
+    }
+
     public String createPatient(CreatePatientRequest request, Long doctorId) {
         if(userRepository.findByUsername(request.getUsername()) != null) {
             throw new UserAlreadyExistsException();

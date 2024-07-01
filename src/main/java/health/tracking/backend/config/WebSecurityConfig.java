@@ -49,8 +49,9 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/doctor/v1/**").hasAnyAuthority("DOCTOR", "ADMIN")
                         .requestMatchers("/api/patient/v1/**").hasAnyAuthority("PATIENT", "ADMIN", "DOCTOR")
                         .requestMatchers("/api/prescription/v1/**").hasAnyAuthority( "ADMIN", "DOCTOR")*/
-                                .requestMatchers("/api/patient/v1/**").hasAnyAuthority("DOCTOR", "ADMIN")
+                                .requestMatchers("/api/patient/v1/**").hasAnyAuthority("DOCTOR", "ADMIN", "PATIENT")
                                 .requestMatchers("/api/patient-relative/v1/**").hasAnyAuthority("PATIENT", "PATIENT_RELATIVE")
+                                .requestMatchers("/api/admin/v1/**").hasAnyAuthority("ADMIN")
                                 .anyRequest().permitAll()
                 )
                 .sessionManagement(config ->
